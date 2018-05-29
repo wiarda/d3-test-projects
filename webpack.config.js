@@ -28,7 +28,8 @@ module.exports = {
 
   ,resolve: {
     alias: {
-      Scatter: path.resolve(__dirname,'app/scatter/')
+      App: path.resolve(__dirname,'app/')
+      ,Scatter: path.resolve(__dirname,'app/scatter/')
     }
     // ,extensions: ['.js', '.jsx', '.png', '']
   }
