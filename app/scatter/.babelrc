@@ -1,0 +1,20 @@
+{
+  'presets': ["react"]
+
+  ,"env": {
+    "test": {
+      "presets": ["env","react"]
+    }
+  }
+
+  ,'plugins': [
+    ['transform-object-rest-spread',{"useBuildIns":true}]
+    ,["transform-runtime"]
+    ,["syntax-dynamic-import"]
+  ]
+  ,ignore: [
+    'webpack.config.js'
+    ,'prod-webpack.config.js'
+    ,'dev-webpack.config.js'
+  ]
+}
