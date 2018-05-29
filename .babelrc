@@ -5,6 +5,9 @@
     "test": {
       "presets": ["env","react"]
     }
+    ,"dev-build": {
+      "presets": ["react"]
+    }
   }
 
   ,'plugins': [
