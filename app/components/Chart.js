@@ -1,5 +1,4 @@
 import React from 'react'
-import Background from 'Components/Background'
 import Title from 'Components/Title'
 
 
@@ -11,19 +10,13 @@ export default class Chart extends React.Component{
 
   render(){
     return (
-      <React.Fragment>
-        <Background
-          img={this.props.img}
-        />
         <div className="container-fluid">
           <div className="row">
             <div className="col-0 col-sm-1"/>
 
             <div className="col-12 col-sm-10">
 
-              <Title
-                titleText={this.props.titleText}
-              />
+              {this.props.children}
 
               <div className="row">
                 <svg id="scatter-plot"/>
@@ -34,8 +27,6 @@ export default class Chart extends React.Component{
             <div className="col-0 col-sm-1"/>
           </div>
         </div>
-
-      </React.Fragment>
     )
   }
 }

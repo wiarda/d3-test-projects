@@ -29,7 +29,6 @@ module.exports = {
   ,resolve: {
     alias: {
       App: path.resolve(__dirname,'app/')
-      ,Scatter: path.resolve(__dirname,'app/scatter/')
       ,TDF: path.resolve(__dirname,'app/tdf/')
       ,Components: path.resolve(__dirname, 'app/components')
     }

@@ -1,8 +1,8 @@
 import React from 'react'
 import {render} from 'react-dom'
 import css from './index.scss'
-import ScatterPlot from 'Scatter/TourDeFrance'
+import App from 'TDF/TourDeFrance'
 
 document.addEventListener("DOMContentLoaded", function(){
-  render (<ScatterPlot/>, document.getElementById("root"))
+  render (<App/>, document.getElementById("root"))
 })

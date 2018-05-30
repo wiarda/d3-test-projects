@@ -11,8 +11,6 @@ componentDidMount(){
   let length = Array.prototype.reduce.call(titles,function(acc,cur){
     return Math.max(acc,cur.clientWidth)
   },0)
-  console.log(titles)
-  console.log(length)
   this.setState({width:length+this.props.titleBoxPadding})
 }
 
