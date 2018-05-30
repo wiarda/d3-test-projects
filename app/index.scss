@@ -1,0 +1,19 @@
+@import "../node_modules/bootstrap/scss/bootstrap-grid";
+//utilities
+@import "../node_modules/bootstrap/scss/mixins/breakpoints";
+@import "../node_modules/bootstrap/scss/mixins/hover";
+@import "../node_modules/bootstrap/scss/mixins/image";
+@import "../node_modules/bootstrap/scss/mixins/badge";
+@import "../node_modules/bootstrap/scss/mixins/resize";
+@import "../node_modules/bootstrap/scss/mixins/screen-reader";
+@import "../node_modules/bootstrap/scss/mixins/size";
+@import "../node_modules/bootstrap/scss/mixins/reset-text";
+@import "../node_modules/bootstrap/scss/mixins/text-emphasis";
+@import "../node_modules/bootstrap/scss/mixins/text-hide";
+@import "../node_modules/bootstrap/scss/mixins/text-truncate";
+@import "../node_modules/bootstrap/scss/mixins/visibility";
+@import '../node_modules/bootstrap/scss/utilities/_text.scss';
+@import '../node_modules/bootstrap/scss/utilities/_spacing.scss';
+
+//local sheets
+@import './scatter/TourDeFrance.scss'
