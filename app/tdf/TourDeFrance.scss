@@ -12,15 +12,46 @@ body{
 }
 
 .title{
-  color:white;
+  color:cornsilk;
   font-size: 3rem;
 }
 
-.title-2{
-  font-size: 3.5rem;
+#title-box{
+  background-color: rgba(0,0,0,.3);
+  margin:auto;
 }
 
-.title-box{
-  background-color: rgba(0,0,0,.5);
-  margin:auto;
+#chart-box{
+  background-color: rgba(0,0,0,.3);
+  min-height:600px;
+  min-width: 500px;
+  width:100%;
+}
+
+line{
+  stroke:cornsilk;
+}
+
+path{
+  stroke:cornsilk;
+}
+
+text{
+  fill:cornsilk;
+}
+
+circle{
+  stroke: rgb(89, 80, 80);
+  stroke-width: 2px;
+  &:hover {
+    r:10;
+    stroke:cornsilk;
+  }
+}
+
+.tooltip{
+  position:absolute;
+	background-color: white;
+	border-radius: 5px;
+	padding:10px
 }

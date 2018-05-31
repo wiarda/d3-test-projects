@@ -84,6 +84,12 @@ module.exports = {
           ]
         }
 
+        //text files
+        ,{
+          test: /\.txt$/,
+          use: 'raw-loader'
+        }
+
     ] // end of rules
   } //end of module
 

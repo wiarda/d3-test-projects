@@ -1,6 +1,4 @@
 import React from 'react'
-import Title from 'Components/Title'
-
 
 export default class Chart extends React.Component{
   constructor(props){
@@ -9,6 +7,7 @@ export default class Chart extends React.Component{
   }
 
   render(){
+
     return (
         <div className="container-fluid">
           <div className="row">
@@ -18,8 +17,16 @@ export default class Chart extends React.Component{
 
               {this.props.children}
 
+              <div className="row p-1"/>
+
               <div className="row">
-                <svg id="scatter-plot"/>
+                <div id="chart-box">
+                  <svg
+                    id="chart-svg"
+                    width="100%"
+                    // height={this.props.height}
+                  />
+                </div>
               </div>
 
             </div>

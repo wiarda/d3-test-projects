@@ -26,7 +26,7 @@ render(){
   })
 
   return (
-    <div className="title-box"
+    <div id="title-box"
       style={{maxWidth:this.state.width+"px"}}
     >
       <div className="row py-1"/>
