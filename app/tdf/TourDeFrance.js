@@ -1,9 +1,11 @@
 import React from 'react'
+import {throttleResize, secondsToMinutes} from 'Helpers/helpers'
 import * as d3 from 'd3'
 import Chart from 'Components/Chart'
 import Background from 'Components/Background'
 import Title from 'Components/Title'
 import img from 'TDF/assets/tour-de-france-d3-scatter-plot-bg.jpg'
+
 
 const CHART_MARGIN_X = 90
 const CHART_MARGIN_Y = 50
@@ -12,6 +14,7 @@ const CIRCLE_SIZE = 7
 let data = fetch("https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/cyclist-data.json")
 .then(r=>r.json())
 
+throttleResize(500)
 
 export default class App extends React.Component{
   constructor(props){
@@ -23,13 +26,13 @@ export default class App extends React.Component{
   componentDidMount(){
     this.deriveChartHeight()
     drawForceChart.bind(this)()
-    window.addEventListener("resize",function(){
+    window.addEventListener("optimizedResize",function(){
       this.deriveChartHeight()
     }.bind(this))
   }
 
   componentDidUpdate(){
-    resizeChart.bind(this)()
+    drawForceChart.bind(this)()
   }
 
   deriveChartHeight(){
@@ -57,19 +60,10 @@ export default class App extends React.Component{
   }
 }
 
-
-function secondsToMinutes(seconds){
-  let mins = Math.floor(seconds / 60)
-  let secs = (seconds % 60)
-  secs = String(secs).length === 1 ? '0' + String(secs) : secs
-  return `${mins}:${secs}`
-}
-
-
 function drawForceChart(){
-  console.log("force chart")
   data.then( function(data){
-    let svg = d3.select("#chart-svg").attr("height",this.state.height)
+    let svg = d3.select("#chart-svg")
+    let height = document.getElementById("chart-svg").clientHeight
     let width = document.getElementById("chart-svg").clientWidth
     let tooltip = d3.select("body").append("div").attr("class","tooltip")
     .style("opacity",0)
@@ -88,17 +82,17 @@ function drawForceChart(){
 
     let scaleY = d3.scaleTime()
     .domain([yMin-yDomainBuffer,yMax+yDomainBuffer])
-    .range([CHART_MARGIN_Y,this.state.height-CHART_MARGIN_Y])
+    .range([CHART_MARGIN_Y,height-CHART_MARGIN_Y])
 
-// console.log(d3.range(12,20,1))
     let axisX = d3.axisBottom(scaleX)
-    .tickValues( d3.range(1992,2017,1) )
-    // .tickValues([1992,2000,2008,2016])
+    .ticks(5)
     .tickFormat(d3.format(""))
+    .tickSizeOuter(0)
 
     let axisY = d3.axisLeft(scaleY)
-    // .ticks(2)
+    .tickValues(d3.range(2400,2160,-30))
     .tickFormat(secondsToMinutes)
+    .tickSizeOuter(0)
 
     let nodes = data.map(el=>{
       let node = {}
@@ -135,93 +129,44 @@ function drawForceChart(){
       .attr("cy", d=>d.y)
     }
 
-
-    let xAxis = svg.append("g")
+    let xAxis
+    if (document.getElementById("x-axis")) xAxis = d3.select("#x-axis")
+    else {
+      xAxis = svg.append("g")
       .style("font","bold 1rem arial")
       .attr("id","x-axis")
-      .attr("transform", `translate(0,${this.state.height-CHART_MARGIN_Y})`)
+    }
+    xAxis
+      .attr("transform", `translate(0,${height-CHART_MARGIN_Y})`)
       .call(axisX)
 
-    let yAxis = svg.append("g")
-      .style("font","bold 1rem arial")
-      .attr("id","y-axis")
+    let yAxis
+    if (document.getElementById("y-axis")) yAxis = d3.select("#y-axis")
+    else {
+      yAxis = svg.append("g")
+        .style("font","bold 1rem arial")
+        .attr("id","y-axis")
+      yAxis
+        .append("text")
+        .attr("y",CHART_MARGIN_Y/2)
+        .attr("x",CHART_MARGIN_X/2)
+        .text("Finish Time")
+    }
+    yAxis
       .attr("transform",`translate(${CHART_MARGIN_X},0)`)
       .call(axisY)
-      .append("text")
-      .attr("y",CHART_MARGIN_Y/2)
-      .attr("x",CHART_MARGIN_X/2)
-      .text("Finish Time")
 
-    svg.append("text")
-    .text("Top 35 Records for Alpe D'Huez")
+    let chartTitle
+    if (document.getElementById("chart-title")) chartTitle = d3.select("#chart-title")
+    else{
+      chartTitle = svg.append("text")
+      .text("Top 35 Records for Alpe D'Huez")
+      .attr("id","chart-title")
+      .style("font-size","2rem")
+    }
+    chartTitle
     .attr("x",width/2-210)
     .attr("y",CHART_MARGIN_Y)
-    .attr("id","chart-title")
-    .style("font-size","2rem")
-
-    xAxis.selectAll("text").style("font-size","1 rem")
-
-  }.bind(this))
-}
-
-function resizeChart(svg){
-  data.then( function(data){
-    let svg = d3.select("#chart-svg").attr("height",this.state.height)
-    let width = document.getElementById("chart-svg").clientWidth
-
-    let xMin = d3.min(data,d=>d.Year)
-    let xMax = d3.max(data,d=>d.Year)
-    let xDomainBuffer = Math.round( (xMax - xMin)/10 )
-
-    let yMin = d3.min(data,d=>d.Seconds)
-    let yMax = d3.max(data,d=>d.Seconds)
-    let yDomainBuffer = Math.round( (yMax- yMin)/10 )
-
-    let scaleX = d3.scaleTime()
-    .domain([xMin-xDomainBuffer,xMax+xDomainBuffer])
-    .range([CHART_MARGIN_X,width-CHART_MARGIN_X])
-
-    let scaleY = d3.scaleTime()
-    .domain([yMin-yDomainBuffer,yMax+yDomainBuffer])
-    .range([CHART_MARGIN_Y,this.state.height-CHART_MARGIN_Y])
-
-    let axisX = d3.axisBottom(scaleX)
-    .tickFormat(d3.format(""))
-    .ticks(Math.min(Math.floor(width/55),10))
-    let axisY = d3.axisLeft(scaleY)
-    .tickFormat(secondsToMinutes)
-    .ticks(Math.min(Math.floor(this.state.height/55),10))
-
-
-
-    let nodes = data.map(el=>{
-      let node = {}
-      Object.assign(node,el)
-      node.x = scaleX(el.Year)
-      node.y = scaleY(el.Seconds)
-      return node
-    })
-
-    let simulation = d3.forceSimulation(nodes)
-    .force('collision',d3.forceCollide().radius(CIRCLE_SIZE))
-    .on('tick',renderChart)
-
-    function renderChart(){
-      svg.selectAll('circle').data(nodes)
-      .attr("cx", d=>d.x)
-      .attr("cy", d=>d.y)
-    }
-
-    d3.select("#x-axis")
-      .attr("transform", `translate(0,${this.state.height-CHART_MARGIN_Y})`)
-      .call(axisX)
-
-    d3.select("#y-axis")
-      .attr("transform",`translate(${CHART_MARGIN_X},0)`)
-      .call(axisY)
-
-    d3.select("#chart-title")
-    .attr("x",width/2-210)
 
   }.bind(this))
 }

@@ -31,6 +31,7 @@ module.exports = {
       App: path.resolve(__dirname,'app/')
       ,TDF: path.resolve(__dirname,'app/tdf/')
       ,Components: path.resolve(__dirname, 'app/components')
+      ,Helpers: path.resolve(__dirname, 'app/helpers')
     }
     // ,extensions: ['.js', '.jsx', '.png', '']
   }

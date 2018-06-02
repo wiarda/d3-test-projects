@@ -12,8 +12,12 @@ body{
 }
 
 .title{
+  white-space:nowrap;
   color:cornsilk;
   font-size: 3rem;
+  @media only screen and (max-height:800px) {
+    font-size: 2rem;
+  }
 }
 
 #title-box{
@@ -30,7 +34,7 @@ body{
 
 svg{
   min-width:500px;
-  min-height: 600px;
+  min-height: 400px;
 }
 
 line{

@@ -1,16 +1,37 @@
 import React from 'react'
+const RESPONSIVE_BREAKPOINT = 800
+
 
 export default class Title extends React.Component{
   constructor(props){
     super(props)
     this.state = {width:null}
+    this.height = window.innerHeight
+    this.deriveLength = this.deriveLength.bind(this)
   }
 
 componentDidMount(){
+  this.deriveLength()
+}
+
+getSnapshotBeforeUpdate(){
+  return window.innerHeight
+}
+
+componentDidUpdate(prevProps,prevState,snapshot){
+  if (this.height<=RESPONSIVE_BREAKPOINT && snapshot>RESPONSIVE_BREAKPOINT || this.height>RESPONSIVE_BREAKPOINT && snapshot<=RESPONSIVE_BREAKPOINT){
+    this.height = window.innerHeight
+    this.deriveLength()
+  }
+  else this.height = window.innerHeight
+}
+
+deriveLength(){
   let titles = document.getElementsByClassName("title")
   let length = Array.prototype.reduce.call(titles,function(acc,cur){
     return Math.max(acc,cur.clientWidth)
   },0)
+
   this.setState({width:length+this.props.titleBoxPadding})
 }
 

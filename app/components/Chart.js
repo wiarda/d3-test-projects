@@ -7,7 +7,6 @@ export default class Chart extends React.Component{
   }
 
   render(){
-
     return (
         <div className="container-fluid">
           <div className="row">
@@ -24,7 +23,7 @@ export default class Chart extends React.Component{
                   <svg
                     id="chart-svg"
                     width="100%"
-                    // height={this.props.height}
+                    height={this.props.height}
                   />
                 </div>
               </div>
