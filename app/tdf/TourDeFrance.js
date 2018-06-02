@@ -22,7 +22,7 @@ export default class App extends React.Component{
 
   componentDidMount(){
     this.deriveChartHeight()
-    drawChart.bind(this)()
+    drawForceChart.bind(this)()
     window.addEventListener("resize",function(){
       this.deriveChartHeight()
     }.bind(this))
@@ -65,7 +65,9 @@ function secondsToMinutes(seconds){
   return `${mins}:${secs}`
 }
 
-function drawChart(){
+
+function drawForceChart(){
+  console.log("force chart")
   data.then( function(data){
     let svg = d3.select("#chart-svg").attr("height",this.state.height)
     let width = document.getElementById("chart-svg").clientWidth
@@ -88,14 +90,34 @@ function drawChart(){
     .domain([yMin-yDomainBuffer,yMax+yDomainBuffer])
     .range([CHART_MARGIN_Y,this.state.height-CHART_MARGIN_Y])
 
-    let axisX = d3.axisBottom(scaleX).tickFormat(d3.format(""))
-    let axisY = d3.axisLeft(scaleY).tickFormat(secondsToMinutes)
+// console.log(d3.range(12,20,1))
+    let axisX = d3.axisBottom(scaleX)
+    .tickValues( d3.range(1992,2017,1) )
+    // .tickValues([1992,2000,2008,2016])
+    .tickFormat(d3.format(""))
 
-    svg.selectAll("circle").data(data).enter()
-      .append("circle")
+    let axisY = d3.axisLeft(scaleY)
+    // .ticks(2)
+    .tickFormat(secondsToMinutes)
+
+    let nodes = data.map(el=>{
+      let node = {}
+      Object.assign(node,el)
+      node.x = scaleX(el.Year)
+      node.y = scaleY(el.Seconds)
+      return node
+    })
+
+    let simulation = d3.forceSimulation(nodes)
+    .force('collision',d3.forceCollide().radius(CIRCLE_SIZE))
+    .on('tick',renderChart)
+
+    function renderChart(){
+      let chart = svg.selectAll('circle').data(nodes)
+
+      chart.enter()
+      .append('circle')
       .attr("r", CIRCLE_SIZE)
-      .attr("cx", d=>scaleX(d.Year))
-      .attr("cy", d=>scaleY(d.Seconds))
       .attr("fill", d=>d.Doping? "rgb(249, 86, 16)" : "rgb(8, 232, 158)")
       .on("mouseover",function(d){
         tooltip.style("left",d3.event.pageX + 30 +"px")
@@ -108,6 +130,11 @@ function drawChart(){
         tooltip.transition().duration(500)
         .style("opacity",0)
       })
+      .merge(chart)
+      .attr("cx", d=>d.x)
+      .attr("cy", d=>d.y)
+    }
+
 
     let xAxis = svg.append("g")
       .style("font","bold 1rem arial")
@@ -158,12 +185,32 @@ function resizeChart(svg){
     .domain([yMin-yDomainBuffer,yMax+yDomainBuffer])
     .range([CHART_MARGIN_Y,this.state.height-CHART_MARGIN_Y])
 
-    let axisX = d3.axisBottom(scaleX).tickFormat(d3.format(""))
-    let axisY = d3.axisLeft(scaleY).tickFormat(secondsToMinutes)
+    let axisX = d3.axisBottom(scaleX)
+    .tickFormat(d3.format(""))
+    .ticks(Math.min(Math.floor(width/55),10))
+    let axisY = d3.axisLeft(scaleY)
+    .tickFormat(secondsToMinutes)
+    .ticks(Math.min(Math.floor(this.state.height/55),10))
 
-    svg.selectAll("circle").data(data)
-      .attr("cx", d=>scaleX(d.Year))
-      .attr("cy", d=>scaleY(d.Seconds))
+
+
+    let nodes = data.map(el=>{
+      let node = {}
+      Object.assign(node,el)
+      node.x = scaleX(el.Year)
+      node.y = scaleY(el.Seconds)
+      return node
+    })
+
+    let simulation = d3.forceSimulation(nodes)
+    .force('collision',d3.forceCollide().radius(CIRCLE_SIZE))
+    .on('tick',renderChart)
+
+    function renderChart(){
+      svg.selectAll('circle').data(nodes)
+      .attr("cx", d=>d.x)
+      .attr("cy", d=>d.y)
+    }
 
     d3.select("#x-axis")
       .attr("transform", `translate(0,${this.state.height-CHART_MARGIN_Y})`)
