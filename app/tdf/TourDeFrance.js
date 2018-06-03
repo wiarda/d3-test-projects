@@ -1,5 +1,5 @@
 import React from 'react'
-import {throttleResize, secondsToMinutes} from 'Helpers/helpers'
+import {throttleResize, secondsToMinutes, getOrdinal} from 'Helpers/helpers'
 import * as d3 from 'Helpers/d3'
 import Chart from 'Components/Chart'
 import Background from 'Components/Background'
@@ -65,7 +65,7 @@ function drawForceChart(){
     let svg = d3.select("#chart-svg")
     let height = document.getElementById("chart-svg").clientHeight
     let width = document.getElementById("chart-svg").clientWidth
-    let tooltip = d3.select("body").append("div").attr("class","tooltip")
+    let tooltip = d3.select("body").append("div").attr("class","tooltip").attr("id","tooltip")
     .style("opacity",0)
 
     let xMin = d3.min(data,d=>d.Year)
@@ -116,13 +116,14 @@ function drawForceChart(){
       .on("mouseover",function(d){
         tooltip.style("left",d3.event.pageX + 30 +"px")
         .style("top",d3.event.pageY -30 +"px")
-        .html(d.Name +"<br>" + (d.Doping ? d.Doping : "No allegations of doping.") )
+        .html(`${d.Name}, ${d.Time} (${getOrdinal(d.Place)} fastest record) <br> ${d.Doping ? d.Doping : "No allegations of doping."}`)
         tooltip.transition().duration(500)
         .style("opacity",1)
       })
       .on("mouseout",function(){
-        tooltip.transition().duration(500)
+        tooltip
         .style("opacity",0)
+        .style("left",-200+"px").style("top",-200+"px")
       })
       .merge(chart)
       .attr("cx", d=>d.x)

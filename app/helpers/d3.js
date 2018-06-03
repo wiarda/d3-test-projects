@@ -1,4 +1,4 @@
-export {select, selectAll} from 'd3-selection'
+export {select, selectAll, event} from 'd3-selection'
 export {min, max, ticks, range} from 'd3-array'
 export {scaleLinear, scaleTime} from 'd3-scale'
 export {forceSimulation,forceCollide} from 'd3-force'

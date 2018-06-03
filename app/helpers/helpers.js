@@ -23,3 +23,7 @@ export function secondsToMinutes(seconds){
   secs = String(secs).length === 1 ? '0' + String(secs) : secs
   return `${mins}:${secs}`
 }
+
+export function getOrdinal(n){
+  return n + (["st","nd","rd"][((n+90)%100-10)%10-1]||"th")
+}
