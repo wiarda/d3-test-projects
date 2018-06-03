@@ -16,13 +16,21 @@ var OptimizeCssAssetsConfig = new OptimizeCssAssetsPlugin({
 })
 var UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 var UglifyJSConfig = new UglifyJSPlugin({
-  uglifyOptions:{dead_code:true}
+  test: /\.js($|\?)/i
+  ,uglifyOptions:{
+    dead_code:true
+    ,output: {
+      comments:false
+      ,beautify:false
+    }
+  }
+  // ,extractComments:true
 })
-
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 
 module.exports = {
-  mode: 'development'
+  mode: 'production'
 
   ,entry: __dirname + '/app/index.js'
 
@@ -94,6 +102,11 @@ module.exports = {
     ] // end of rules
   } //end of module
 
+  ,externals:{
+    react: 'React'
+    ,'react-dom': 'ReactDOM'
+  }
+
   ,output: {
     filename: 'index.js'
     ,path: __dirname + '/build'
@@ -102,5 +115,7 @@ module.exports = {
   ,plugins: [
     HTMLWebpackConfig
     ,ExtractTextConfig
+    ,UglifyJSConfig
+    ,new BundleAnalyzerPlugin()
   ]
 }

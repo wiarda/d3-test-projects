@@ -2,7 +2,7 @@
   'presets': ["react"]
 
   ,"env": {
-    "test": {
+    "prod-build": {
       "presets": ["env","react"]
     }
     ,"dev-build": {

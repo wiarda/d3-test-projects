@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "SET BABEL_ENV=dev-build webpack-dev-server --mode development"
+    "setEnvDev": "SET BABEL_ENV=dev-build",
+    "dev": "webpack-dev-server --mode development",
+    "build": "webpack --mode production",
+    "setEnvProd": "SET BABEL_ENV=prod-build"
   },
   "author": "",
   "license": "ISC",
@@ -13,7 +16,8 @@
     "bootstrap": "^4.1.1",
     "d3": "^5.4.0",
     "react": "^16.4.0",
-    "react-dom": "^16.4.0"
+    "react-dom": "^16.4.0",
+    "webpack-bundle-analyzer": "^2.13.1"
   },
   "devDependencies": {
     "autoprefixer": "^8.5.1",
@@ -36,8 +40,9 @@
     "raw-loader": "^0.5.1",
     "sass-loader": "^7.0.1",
     "style-loader": "^0.21.0",
+    "uglifyjs-webpack-plugin": "^1.2.5",
     "url-loader": "^1.0.1",
-    "webpack": "^4.10.0",
+    "webpack": "^4.10.2",
     "webpack-cli": "^2.1.4",
     "webpack-dev-server": "^3.1.4"
   }

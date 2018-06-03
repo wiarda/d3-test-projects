@@ -1,6 +1,6 @@
 import React from 'react'
 import {throttleResize, secondsToMinutes} from 'Helpers/helpers'
-import * as d3 from 'd3'
+import * as d3 from 'Helpers/d3'
 import Chart from 'Components/Chart'
 import Background from 'Components/Background'
 import Title from 'Components/Title'
