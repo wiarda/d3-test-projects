@@ -16,7 +16,7 @@ let data = fetch("https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenc
 
 throttleResize(500)
 
-export default class App extends React.Component{
+export default class TourDeFrance extends React.Component{
   constructor(props){
     super(props)
     this.state = {height:null}

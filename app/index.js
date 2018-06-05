@@ -1,10 +1,17 @@
 import React from 'react'
 import {render} from 'react-dom'
+import {BrowserRouter as Router} from 'react-router-dom'
 import css from './index.scss'
-import App from 'TDF/TourDeFrance'
-// import asfnr from './ASFNR/index'
-
+import App from 'Main/App'
+const baseLocation = window.location.pathname
 
 document.addEventListener("DOMContentLoaded", function(){
-  render (<App/>, document.getElementById("root"))
+  render ((
+    <Router
+      basename={baseLocation}
+    >
+      <App/>
+    </Router>
+  )
+    , document.getElementById("root"))
 })
