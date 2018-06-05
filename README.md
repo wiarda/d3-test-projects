@@ -1,4 +1,4 @@
 # d3-test-projects
 
-Some simple projects to test out D3
-
+Some data visualizations built using React and D3:
+* Doping in the Tour de France: a scatter plot
