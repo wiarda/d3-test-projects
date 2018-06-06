@@ -1,21 +1,32 @@
 'use strict'
 
-export function throttleResize(delay=100,type="resize", name="optimizedResize", eventTarget = window){
-  let isActive = false
+export function throttleResize(delay=100, type="resize", name="throttledResize", eventTarget = window){
+
+  let resizeTimer
+  eventTarget.addEventListener(type,dispatch)
+  eventTarget.addEventListener("unsub",unsub,{once:true})
+
+  function unsub(){
+    "unsub event handler"
+    eventTarget.removeEventListener(type,dispatch)
+  }
 
   function dispatch(){
-    if (isActive) return
-    isActive = true
-    setTimeout(function(){
+    clearTimeout(resizeTimer)
+    resizeTimer = setTimeout(function(){
       requestAnimationFrame(function(){
-      console.log("request animation frame")
-      eventTarget.dispatchEvent(new CustomEvent(name))
-      isActive = false
+        console.log("request animation frame")
+        eventTarget.dispatchEvent(new CustomEvent(name))
       })
     },delay)
+  }
 }
-  eventTarget.addEventListener(type,dispatch)
+
+export function unthrottle(){
+
 }
+
+
 
 export function secondsToMinutes(seconds){
   let mins = Math.floor(seconds / 60)
