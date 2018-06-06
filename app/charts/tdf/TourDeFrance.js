@@ -5,7 +5,7 @@ import Chart from 'Components/Chart'
 import Background from 'Components/Background'
 import Title from 'Components/Title'
 import img from 'TDF/assets/tour-de-france-d3-scatter-plot-bg.jpg'
-
+import ChartWrapper from 'Components/ChartWrapper'
 
 const CHART_MARGIN_X = 90
 const CHART_MARGIN_Y = 50
@@ -14,50 +14,40 @@ const CIRCLE_SIZE = 7
 let data = fetch("https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/cyclist-data.json")
 .then(r=>r.json())
 
-throttleResize(500)
-
-export default class TourDeFrance extends React.Component{
-  constructor(props){
-    super(props)
-    this.state = {height:null}
-    this.deriveChartHeight = this.deriveChartHeight.bind(this)
-  }
-
-  componentDidMount(){
-    this.deriveChartHeight()
-    drawForceChart.bind(this)()
-    window.addEventListener("optimizedResize",function(){
-      this.deriveChartHeight()
-    }.bind(this))
-  }
-
-  componentDidUpdate(){
-    drawForceChart.bind(this)()
-  }
-
-  deriveChartHeight(){
-    let height = window.innerHeight - document.getElementById("title-box").clientHeight - CHART_MARGIN_Y
-    this.setState({height:height})
-  }
-
-  render(){
-    return(
-    <React.Fragment>
-
-      <Background
-        img={img}
-      />
-
-      <Chart height={this.state.height}>
-        <Title
-          titleText={["Doping at","Le Tour de France"]}
-          titleBoxPadding={40}
-        />
-      </Chart>
-
-    </React.Fragment>
-    )
-  }
+export default function TourDeFrance(props){
+  // // constructor(props){
+  // //   super(props)
+  // //   this.state = {height:null}
+  // //   this.deriveChartHeight = this.deriveChartHeight.bind(this)
+  // // }
+  // //
+  // // componentDidMount(){
+  // //   this.deriveChartHeight()
+  // //   drawForceChart.bind(this)()
+  // //   window.addEventListener("throttledResize",this.deriveChartHeight)
+  // // }
+  // //
+  // // componentDidUpdate(){
+  // //   drawForceChart.bind(this)()
+  // // }
+  // //
+  // // deriveChartHeight(){
+  // //   let height = window.innerHeight - document.getElementById("title-box").clientHeight - CHART_MARGIN_Y
+  // //   this.setState({height:height})
+  // // }
+  // //
+  // // componentWillUnmount(){
+  // //   window.removeEventListener("throttledResize",this.deriveChartHeight)
+  // // }
+  //
+  // render(){
+  return(
+    <ChartWrapper
+      drawChart={drawForceChart}
+      img={img}
+      titleTextArr={["Doping at","Le Tour de France"]}
+    />
+  )
 }
 
 function drawForceChart(){
@@ -163,7 +153,6 @@ function drawForceChart(){
       chartTitle = svg.append("text")
       .text("Top 35 Records for Alpe D'Huez")
       .attr("id","chart-title")
-      .style("font-size","2rem")
     }
     chartTitle
     .attr("x",width/2-210)

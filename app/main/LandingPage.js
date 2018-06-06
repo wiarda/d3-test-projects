@@ -17,11 +17,19 @@ export default function LandingPage(props){
           <div className="col-8">
 
             <div className="container-fluid">
+
               <div className="row">
-
-                <Link to="/TourDeFrance">Doping at Le Tour de France</Link>
-
+                <Link to="/TourDeFrance" className="chart-link">
+                  Doping at Le Tour de France
+                </Link>
               </div>
+
+              <div className="row">
+                <Link to="/GlobalTemperature" className="chart-link">
+                  Global Temperature from 1753 to 2015
+                </Link>
+              </div>
+
             </div>
 
           </div>

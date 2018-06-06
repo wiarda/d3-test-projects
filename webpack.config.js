@@ -54,10 +54,11 @@ module.exports = (env, argv) => {
     ,resolve: {
       alias: {
         App: path.resolve(__dirname,'app/')
-        ,TDF: path.resolve(__dirname,'app/tdf/')
+        ,TDF: path.resolve(__dirname,'app/charts/tdf/')
         ,Components: path.resolve(__dirname, 'app/components')
         ,Helpers: path.resolve(__dirname, 'app/helpers')
         ,Main: path.resolve(__dirname, 'app/main')
+        ,GlobalTemperature: path.resolve(__dirname,'app/charts/globaltemperature')
       }
       // ,extensions: ['.js', '.jsx', '.png', '']
     }
@@ -125,6 +126,11 @@ module.exports = (env, argv) => {
     ,output: {
       filename: 'index.js'
       ,path: __dirname + '/build'
+      ,publicPath: '/'
+    }
+
+    ,devServer: {
+      historyApiFallback:true
     }
 
     ,plugins: [

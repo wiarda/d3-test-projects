@@ -1,0 +1,27 @@
+line{
+  stroke:cornsilk;
+}
+
+path{
+  stroke:cornsilk;
+}
+
+text{
+  fill:cornsilk;
+}
+
+circle{
+  stroke: rgb(89, 80, 80);
+  stroke-width: 2px;
+  &:hover {
+    r:10;
+    stroke:cornsilk;
+  }
+}
+
+.tooltip{
+  position:absolute;
+	background-color: white;
+	border-radius: 5px;
+	padding:10px
+}

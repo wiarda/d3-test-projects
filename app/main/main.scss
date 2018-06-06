@@ -23,6 +23,13 @@ body{
   @media only screen and (max-height:800px) {
     font-size: 2rem;
   }
+  @media only screen and (max-width:800px) {
+    font-size: 2rem;
+  }
+}
+
+.chart-link{
+  font-size:2rem;
 }
 
 #title-box{
@@ -30,6 +37,13 @@ body{
   margin:auto;
 }
 
+text#chart-title{
+  margin:auto;
+  font-size:2rem;
+  @media only screen and (max-width:800px){
+    font-size:1.5rem;
+  }
+}
 #chart-box{
   background-color: rgba(0,0,0,.3);
   // min-height:600px;
@@ -40,32 +54,4 @@ body{
 svg{
   min-width:500px;
   min-height: 400px;
-}
-
-line{
-  stroke:cornsilk;
-}
-
-path{
-  stroke:cornsilk;
-}
-
-text{
-  fill:cornsilk;
-}
-
-circle{
-  stroke: rgb(89, 80, 80);
-  stroke-width: 2px;
-  &:hover {
-    r:10;
-    stroke:cornsilk;
-  }
-}
-
-.tooltip{
-  position:absolute;
-	background-color: white;
-	border-radius: 5px;
-	padding:10px
 }
