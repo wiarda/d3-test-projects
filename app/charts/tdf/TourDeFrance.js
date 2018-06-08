@@ -1,5 +1,5 @@
 import React from 'react'
-import {throttleResize, secondsToMinutes, getOrdinal} from 'Helpers/helpers'
+import {throttleResize, secondsToMinutes, getOrdinal, defineScale} from 'Helpers/helpers'
 import * as d3 from 'Helpers/d3'
 import Chart from 'Components/Chart'
 import Background from 'Components/Background'
@@ -15,32 +15,7 @@ let data = fetch("https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenc
 .then(r=>r.json())
 
 export default function TourDeFrance(props){
-  // // constructor(props){
-  // //   super(props)
-  // //   this.state = {height:null}
-  // //   this.deriveChartHeight = this.deriveChartHeight.bind(this)
-  // // }
-  // //
-  // // componentDidMount(){
-  // //   this.deriveChartHeight()
-  // //   drawForceChart.bind(this)()
-  // //   window.addEventListener("throttledResize",this.deriveChartHeight)
-  // // }
-  // //
-  // // componentDidUpdate(){
-  // //   drawForceChart.bind(this)()
-  // // }
-  // //
-  // // deriveChartHeight(){
-  // //   let height = window.innerHeight - document.getElementById("title-box").clientHeight - CHART_MARGIN_Y
-  // //   this.setState({height:height})
-  // // }
-  // //
-  // // componentWillUnmount(){
-  // //   window.removeEventListener("throttledResize",this.deriveChartHeight)
-  // // }
-  //
-  // render(){
+
   return(
     <ChartWrapper
       drawChart={drawForceChart}
@@ -58,21 +33,8 @@ function drawForceChart(){
     let tooltip = d3.select("body").append("div").attr("class","tooltip").attr("id","tooltip")
     .style("opacity",0)
 
-    let xMin = d3.min(data,d=>d.Year)
-    let xMax = d3.max(data,d=>d.Year)
-    let xDomainBuffer = Math.round( (xMax - xMin)/10 )
-
-    let yMin = d3.min(data,d=>d.Seconds)
-    let yMax = d3.max(data,d=>d.Seconds)
-    let yDomainBuffer = Math.round( (yMax- yMin)/10 )
-
-    let scaleX = d3.scaleTime()
-    .domain([xMin-xDomainBuffer,xMax+xDomainBuffer])
-    .range([CHART_MARGIN_X,width-CHART_MARGIN_X])
-
-    let scaleY = d3.scaleTime()
-    .domain([yMin-yDomainBuffer,yMax+yDomainBuffer])
-    .range([CHART_MARGIN_Y,height-CHART_MARGIN_Y])
+    let scaleX = defineScale(d3.scaleTime,data,"Year",10,CHART_MARGIN_X,width)
+    let scaleY = defineScale(d3.scaleTime,data,"Seconds",10,CHART_MARGIN_Y,height)
 
     let axisX = d3.axisBottom(scaleX)
     .ticks(5)

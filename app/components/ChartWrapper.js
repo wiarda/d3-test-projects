@@ -14,7 +14,7 @@ export default class ChartWrapper extends React.Component{
 
   componentDidMount(){
     this.deriveChartHeight()
-    this.props.drawChart.bind(this)()
+    // this.props.drawChart.bind(this)()
     window.addEventListener("throttledResize",this.deriveChartHeight)
   }
 
@@ -39,6 +39,7 @@ export default class ChartWrapper extends React.Component{
       <Background
         img={this.props.img}
       />
+      
 
       <Chart height={this.state.height}>
         <Title
@@ -47,6 +48,9 @@ export default class ChartWrapper extends React.Component{
           deriveHeight={this.deriveChartHeight}
         />
       </Chart>
+
+      <div id="tooltip"/>
+
 
     </React.Fragment>
     )

@@ -1,4 +1,5 @@
 'use strict'
+import * as d3 from 'Helpers/d3'
 
 export function throttleResize(delay=100, type="resize", name="throttledResize", eventTarget = window){
 
@@ -7,7 +8,6 @@ export function throttleResize(delay=100, type="resize", name="throttledResize",
   eventTarget.addEventListener("unsub",unsub,{once:true})
 
   function unsub(){
-    "unsub event handler"
     eventTarget.removeEventListener(type,dispatch)
   }
 
@@ -22,11 +22,24 @@ export function throttleResize(delay=100, type="resize", name="throttledResize",
   }
 }
 
-export function unthrottle(){
+export function defineScale(scaleFunc,dataset,dataprop,bufferFactor,margin,dimension){
+  // let min = d3.min(dataset,d=>d[dataprop])
+  // let max = d3.max(dataset,d=>d[dataprop])
+  // let buffer = bufferFactor ? Math.round((max-min)/bufferFactor):0
 
+  return defineDomain(scaleFunc, dataset, dataprop, bufferFactor).range([margin,dimension-margin])
 }
 
+export function defineDomain(scaleFunc,dataset,dataprop,bufferFactor){
+  let min = d3.min(dataset,d=>d[dataprop])
+  let max = d3.max(dataset,d=>d[dataprop])
+  let buffer = bufferFactor ? Math.round((max-min)/bufferFactor):0
+  return scaleFunc().domain([min-buffer,max+buffer])
+}
 
+export function getAxisLength(scale){
+  return ( scale.range()[1] - scale.range()[0] ) / ( scale.domain()[1]-scale.domain()[0] )
+}
 
 export function secondsToMinutes(seconds){
   let mins = Math.floor(seconds / 60)
