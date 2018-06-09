@@ -22,23 +22,28 @@ export function throttleResize(delay=100, type="resize", name="throttledResize",
   }
 }
 
-export function defineScale(scaleFunc,dataset,dataprop,bufferFactor,margin,dimension){
-  // let min = d3.min(dataset,d=>d[dataprop])
-  // let max = d3.max(dataset,d=>d[dataprop])
-  // let buffer = bufferFactor ? Math.round((max-min)/bufferFactor):0
-
-  return defineDomain(scaleFunc, dataset, dataprop, bufferFactor).range([margin,dimension-margin])
+export function defineScale({scale,dataset,dataprop,bufferFactor,rangeStart,rangeEnd}){
+  return defineDomain({scale,dataset,dataprop,bufferFactor})
+  .range([rangeStart,rangeEnd])
 }
 
-export function defineDomain(scaleFunc,dataset,dataprop,bufferFactor){
+export function defineDomain({scale,dataset,dataprop,bufferFactor}){
   let min = d3.min(dataset,d=>d[dataprop])
   let max = d3.max(dataset,d=>d[dataprop])
   let buffer = bufferFactor ? Math.round((max-min)/bufferFactor):0
-  return scaleFunc().domain([min-buffer,max+buffer])
+  return scale().domain([min-buffer,max+buffer])
 }
 
 export function getAxisLength(scale){
-  return ( scale.range()[1] - scale.range()[0] ) / ( scale.domain()[1]-scale.domain()[0] )
+  return ( scale(scale.domain()[1]) - scale(scale.domain()[0]) ) / ( scale.domain()[1]-scale.domain()[0] )
+}
+
+export function addAxisElement(parent,axisId,className){
+  if (d3.select("#"+axisId).empty()) {
+    parent.append("g").attr("id",axisId).attr("class",className)
+    .append("text").attr("id",`${axisId}-title`).attr("class",className)
+  }
+  return d3.select("#"+axisId)
 }
 
 export function secondsToMinutes(seconds){

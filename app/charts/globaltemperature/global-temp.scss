@@ -1,3 +1,23 @@
-#tooltip{
-  background-color: rgba(35, 35, 36, 0.75)
+$ocean: rgb(31, 106, 153);
+$slate: rgb(14, 45, 65);
+
+#tooltip.globaltemp{
+  background-color: $slate;
+  color: cornsilk;
 }
+
+#x.globaltemp, #y.globaltemp{
+  font: bold 1rem arial;
+  & *{
+    stroke:$slate;
+    stroke-width:2px;
+  }
+  & text{
+    stroke: none;
+  }
+
+}
+//
+// #y.globaltemp{
+//   font: bold 1rem arial;
+// }

@@ -6,6 +6,7 @@ import Background from 'Components/Background'
 import Title from 'Components/Title'
 import img from 'TDF/assets/tour-de-france-d3-scatter-plot-bg.jpg'
 import ChartWrapper from 'Components/ChartWrapper'
+import styles from 'TDF/TourDeFrance.scss'
 
 const CHART_MARGIN_X = 90
 const CHART_MARGIN_Y = 50
