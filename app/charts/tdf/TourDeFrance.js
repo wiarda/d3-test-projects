@@ -34,8 +34,22 @@ function drawForceChart(){
     let tooltip = d3.select("body").append("div").attr("class","tooltip").attr("id","tooltip")
     .style("opacity",0)
 
-    let scaleX = defineScale(d3.scaleTime,data,"Year",10,CHART_MARGIN_X,width)
-    let scaleY = defineScale(d3.scaleTime,data,"Seconds",10,CHART_MARGIN_Y,height)
+    let scaleX = defineScale({
+      scale:d3.scaleTime
+      ,dataset:data
+      ,dataprop:"Year"
+      ,bufferFactor:10
+      ,rangeStart:CHART_MARGIN_X
+      ,rangeEnd:width-CHART_MARGIN_X
+    })
+    let scaleY = defineScale({
+      scale:d3.scaleTime
+      ,dataset:data
+      ,dataprop:"Seconds"
+      ,bufferFactor:10
+      ,rangeStart:CHART_MARGIN_Y
+      ,rangeEnd:height-CHART_MARGIN_Y
+    })
 
     let axisX = d3.axisBottom(scaleX)
     .ticks(5)

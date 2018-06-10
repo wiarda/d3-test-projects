@@ -6,7 +6,7 @@ $slate: rgb(14, 45, 65);
   color: cornsilk;
 }
 
-#x.globaltemp, #y.globaltemp{
+#x.globaltemp, #y.globaltemp, #xLegend.globaltemp{
   font: bold 1rem arial;
   & *{
     stroke:$slate;
@@ -15,9 +15,8 @@ $slate: rgb(14, 45, 65);
   & text{
     stroke: none;
   }
-
 }
-//
-// #y.globaltemp{
-//   font: bold 1rem arial;
-// }
+
+#xLegend.globaltemp * {
+  font: 0.9rem arial;
+}

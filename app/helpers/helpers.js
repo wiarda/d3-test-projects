@@ -34,16 +34,20 @@ export function defineDomain({scale,dataset,dataprop,bufferFactor}){
   return scale().domain([min-buffer,max+buffer])
 }
 
-export function getAxisLength(scale){
-  return ( scale(scale.domain()[1]) - scale(scale.domain()[0]) ) / ( scale.domain()[1]-scale.domain()[0] )
+export function getDatumLength(scale,count){
+  return ( d3.max(scale.range()) - d3.min(scale.range()) +1 )  / count
 }
 
-export function addAxisElement(parent,axisId,className){
-  if (d3.select("#"+axisId).empty()) {
-    parent.append("g").attr("id",axisId).attr("class",className)
-    .append("text").attr("id",`${axisId}-title`).attr("class",className)
+export function countContinuousDataset(dataset,dataprop){
+  return d3.max(dataset,d=>d[dataprop]) - d3.min(dataset,d=>d[dataprop]) + 1
+}
+
+export function selectGroup(parent,id,className=""){
+  if (d3.select("#"+id).empty()) {
+    parent.append("g").attr("id",id).attr("class",className)
+    .append("text").attr("id",`${id}-title`).attr("class",className)
   }
-  return d3.select("#"+axisId)
+  return d3.select("#"+id)
 }
 
 export function secondsToMinutes(seconds){
