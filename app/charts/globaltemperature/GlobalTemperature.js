@@ -6,7 +6,8 @@ import image from 'GlobalTemperature/assets/desert.jpg'
 import style from 'GlobalTemperature/global-temp.scss'
 
 const CHART_MARGIN_X = 100
-const CHART_MARGIN_Y = 100
+const CHART_MARGIN_TOP = 50
+const CHART_MARGIN_BOTTOM = 100
 const COLOR_SCALE = ["#a50026","#d73027","#f46d43","#fdae61","#fee090","#ffffbf","#e0f3f8","#abd9e9","#74add1","#4575b4","#313695"].reverse()
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"]
 
@@ -36,7 +37,7 @@ function drawGlobalTemp(){
       rangeEnd:width-CHART_MARGIN_X
     })
     let scaleY = d3.scaleBand().domain([1,2,3,4,5,6,7,8,9,10,11,12])
-    .range([CHART_MARGIN_Y,height-CHART_MARGIN_Y])
+    .range([CHART_MARGIN_TOP,height-CHART_MARGIN_BOTTOM])
     let scaleColor = defineDomain({
       scale:d3.scaleQuantile
       ,dataset:data
@@ -72,7 +73,7 @@ function drawGlobalTemp(){
     .tickFormat(d3.format(""))
     .tickSizeOuter(0)
     let x = selectGroup(svg,"x","globaltemp")
-    x.attr("transform", `translate(0,${height-CHART_MARGIN_Y})`)
+    x.attr("transform", `translate(0,${height-CHART_MARGIN_BOTTOM})`)
     .call(axisX)
 
     let axisY = d3.axisLeft(scaleY)
@@ -95,15 +96,17 @@ function drawGlobalTemp(){
 
     let legend = selectGroup(svg,"legend").selectAll("rect").data(breakpoints)
 
-    legend.enter().append("rect").attr("fill",d=>scaleColor(d))
-    .merge(legend).attr("x",d=>scaleLegend(d)).attr("y",height-CHART_MARGIN_Y/2).attr("height","30px").attr("width",getDatumLength(scaleLegend,breakpoints.length-1))
+    legend.enter()
+    .append("rect").attr("fill",d=>scaleColor(d))
+    .merge(legend)
+    .attr("x",d=>scaleLegend(d)).attr("y",height-CHART_MARGIN_BOTTOM/2).attr("height","30px").attr("width",getDatumLength(scaleLegend,breakpoints.length-1))
 
     let formatLegendTicks = v=>(v+r.baseTemperature).toFixed(1) +"°"
     let axisLegend = d3.axisBottom(scaleLegend)
     .tickValues(breakpoints)
     .tickFormat(formatLegendTicks)
     let xLegend = selectGroup(d3.select("#legend"),"xLegend","globaltemp")
-    xLegend.attr("transform",`translate(0,${height-CHART_MARGIN_Y/2+30})`)
+    xLegend.attr("transform",`translate(0,${height-CHART_MARGIN_BOTTOM/2+30})`) // 30 = height of legend color scale
     .call(axisLegend)
 
     //extend legend axis path
