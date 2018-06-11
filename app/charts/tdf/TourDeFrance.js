@@ -22,6 +22,10 @@ export default function TourDeFrance(props){
       drawChart={drawForceChart}
       img={img}
       titleTextArr={["Doping at","Le Tour de France"]}
+      chartFooterMargin={50}
+      chartClassName="tdf"
+      sourcesArray={["Fastest cycling times ever up Alpe d’Huez. How many doping related?"]}
+      linksArray={["http://www.stickybottle.com/latest-news/fastest-cycling-times-ever-up-alpe-dhuez-how-many-doping-related/"]}
     />
   )
 }
@@ -31,7 +35,7 @@ function drawForceChart(){
     let svg = d3.select("#chart-svg")
     let height = document.getElementById("chart-svg").clientHeight
     let width = document.getElementById("chart-svg").clientWidth
-    let tooltip = d3.select("body").append("div").attr("class","tooltip").attr("id","tooltip")
+    let tooltip = d3.select("#tooltip").attr("class","tooltip").attr("id","tooltip")
     .style("opacity",0)
 
     let scaleX = defineScale({
