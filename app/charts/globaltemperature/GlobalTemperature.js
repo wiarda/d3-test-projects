@@ -4,6 +4,7 @@ import {defineDomain, defineScale, getDatumLength,selectGroup, countContinuousDa
 import ChartWrapper from 'Components/ChartWrapper'
 import image from 'GlobalTemperature/assets/desert.jpg'
 import style from 'GlobalTemperature/global-temp.scss'
+import rawData from './assets/monthly_avg_land_temp.txt'
 
 const CHART_MARGIN_X = 100
 const CHART_MARGIN_TOP = 50
@@ -11,20 +12,25 @@ const CHART_MARGIN_BOTTOM = 100
 const COLOR_SCALE = ["#a50026","#d73027","#f46d43","#fdae61","#fee090","#ffffbf","#e0f3f8","#abd9e9","#74add1","#4575b4","#313695"].reverse()
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"]
 
-let data = fetch("https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json").then(r=>r.json())
+// let data = fetch("https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json").then(r=>r.json())
 
 export default function GlobalTemperature(props){
   return (
     <ChartWrapper
       drawChart={drawGlobalTemp}
       img={image}
-      titleTextArr={["Average Global Temperature","1753 to 2015"]}
+      titleTextArr={["Average Global Temperature","1753 to 2017"]}
+      chartFooterMargin={50}
+      chartClassName="globaltemp"
+      sourcesArray={["Berkeley Earth Time Series Data: All Land Monthly Average Temperature"]}
+      linksArray={["http://berkeleyearth.org/data/"]}
     />
   )
 }
 
 function drawGlobalTemp(){
-  data.then(r=> {
+  // data.then(r=> {
+    let r = JSON.parse(rawData)
     let data = r.monthlyVariance
     let height = document.getElementById("chart-svg").clientHeight
     let width = document.getElementById("chart-svg").clientWidth
@@ -86,8 +92,6 @@ function drawGlobalTemp(){
     //legend
     const MIN_LEGEND_WIDTH = 450
     let legendStart = Math.min(width/4,(width-MIN_LEGEND_WIDTH)/2)
-    console.log(width)
-    console.log("legendStart",legendStart)
     let breakpoints = scaleColor.quantiles()
     let legendRange= d3.range(breakpoints.length).map(el=>{
       return legendStart + (width-2*legendStart)/breakpoints.length*el
@@ -128,5 +132,5 @@ function drawGlobalTemp(){
     .attr("class","tick").attr("transform",`translate(${newPathH.toFixed(1)},0)`)
     .append("text")
     .text(d=>d).attr("y",tickClone.attr("y")).attr("dy",tickClone.attr("dy"))
-  })
+  // })
 }

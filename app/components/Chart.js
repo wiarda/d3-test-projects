@@ -4,6 +4,13 @@ export default class Chart extends React.Component{
   constructor(props){
     super(props)
     this.state = {bg:null}
+    this.getChild = this.getChild.bind(this)
+  }
+
+  getChild(key){
+    return this.props.children.filter(component=>{
+      return key === component.key
+    })
   }
 
   render(){
@@ -14,7 +21,7 @@ export default class Chart extends React.Component{
 
             <div className="col-12 col-sm-10">
 
-              {this.props.children}
+              {this.getChild("title")}
 
               <div className="row p-1"/>
 
@@ -26,6 +33,10 @@ export default class Chart extends React.Component{
                     height={this.props.height}
                   />
                 </div>
+              </div>
+
+              <div className="row">
+                {this.getChild("sources")}
               </div>
 
             </div>

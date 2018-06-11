@@ -1,3 +1,5 @@
+$bg-shade: rgba(0,0,0,.3);
+
 body{
   min-width: 500px;
 }
@@ -33,7 +35,7 @@ body{
 }
 
 #title-box{
-  background-color: rgba(0,0,0,.3);
+  background-color: $bg-shade;
   margin:auto;
 }
 
@@ -44,8 +46,9 @@ text#chart-title{
     font-size:1.5rem;
   }
 }
-#chart-box{
-  background-color: rgba(0,0,0,.3);
+
+#chart-box, #sources{
+  background-color: $bg-shade;
   // min-height:600px;
   // min-width: 500px;
   width:100%;
