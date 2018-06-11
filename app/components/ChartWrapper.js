@@ -2,6 +2,7 @@ import React from 'react'
 import Chart from 'Components/Chart'
 import Background from 'Components/Background'
 import Title from 'Components/Title'
+import Sources from 'Components/Sources'
 
 export default class ChartWrapper extends React.Component{
   constructor(props){
@@ -9,7 +10,7 @@ export default class ChartWrapper extends React.Component{
     this.state = {height:null}
     this.deriveChartHeight = this.deriveChartHeight.bind(this)
     this.titleBoxPadding = this.props.titleBoxPadding || 40
-    this.chartMarginY = this.props.chartMarginY || 50
+    this.chartFooterMargin = this.props.chartFooterMargin || 50
   }
 
   componentDidMount(){
@@ -28,7 +29,7 @@ export default class ChartWrapper extends React.Component{
   }
 
   deriveChartHeight(){
-    let height = window.innerHeight - document.getElementById("title-box").clientHeight - this.chartMarginY
+    let height = window.innerHeight - document.getElementById("title-box").clientHeight - document.getElementById("sources").clientHeight - this.chartFooterMargin
     this.setState({height:height})
   }
 
@@ -39,17 +40,25 @@ export default class ChartWrapper extends React.Component{
       <Background
         img={this.props.img}
       />
-      
+
 
       <Chart height={this.state.height}>
         <Title
+          key="title"
           titleText={this.props.titleTextArr}
           titleBoxPadding={this.titleBoxPadding}
           deriveHeight={this.deriveChartHeight}
+          className={this.props.chartClassName}
+        />
+        <Sources
+          key="sources"
+          sources={this.props.sourcesArray}
+          links={this.props.linksArray}
+          className={this.props.chartClassName}
         />
       </Chart>
 
-      <div id="tooltip"/>
+      <div id="tooltip" className={this.props.chartClassName}/>
 
 
     </React.Fragment>
