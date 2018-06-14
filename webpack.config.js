@@ -126,7 +126,9 @@ module.exports = (env, argv) => {
     ,output: {
       filename: 'index.js'
       ,path: __dirname + '/build'
+      // publicPath for dev server
       ,publicPath: '/'
+      ,chunkFilename: '[name].bundle.js'
     }
 
     ,devServer: {

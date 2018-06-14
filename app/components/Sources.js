@@ -1,5 +1,6 @@
 'use strict'
 import React from 'react'
+import LinkHome from 'Components/LinkHome'
 
 // const WRAPPER_CLASS = "px-3 py-2"
 
@@ -18,10 +19,22 @@ export default function Sources({sources,links,className=null}){
       id="sources"
       className={className}
     >
-      <div className="row m-0 px-5">
-        Sources:
+      <div className="row">
+
+        <div className="col-10">
+          <div className="row m-0 px-5">
+            Sources:
+          </div>
+          {sources}
+        </div>
+
+        <div className="col-2">
+          <div className="row m-0 h-100">
+            <LinkHome/>
+          </div>
+        </div>
+
       </div>
-      {sources}
     </div>
-  )
+    )
 }

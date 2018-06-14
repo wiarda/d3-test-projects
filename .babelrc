@@ -10,10 +10,11 @@
     }
   }
 
-  ,'plugins': [
+  ,'plugins':
+  [
     ['transform-object-rest-spread',{"useBuildIns":true}]
-    ,["transform-runtime"]
-    ,["syntax-dynamic-import"]
+    ,"transform-runtime"
+    ,"syntax-dynamic-import"
   ]
   ,ignore: [
     'webpack.config.js'

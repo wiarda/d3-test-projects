@@ -14,13 +14,14 @@ export default class ChartWrapper extends React.Component{
   }
 
   componentDidMount(){
+    console.log(this.props)
     this.deriveChartHeight()
     // this.props.drawChart.bind(this)()
     window.addEventListener("throttledResize",this.deriveChartHeight)
   }
 
   componentDidUpdate(){
-    this.props.drawChart.bind(this)()
+    this.props.drawChart(this.props.data,this.props.helpers,this.props.d3)
   }
 
   componentWillUnmount(){
@@ -38,7 +39,7 @@ export default class ChartWrapper extends React.Component{
     <React.Fragment>
 
       <Background
-        img={this.props.img}
+        img={this.props.img || null}
       />
 
 

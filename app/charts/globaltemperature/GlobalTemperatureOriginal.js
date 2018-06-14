@@ -1,6 +1,6 @@
 import React from 'react'
 import * as d3 from 'Helpers/d3'
-import {defineDomain, defineScale, getDatumLength,selectGroup, countContinuousDataset} from 'Helpers/helpers'
+import {defineDomain, defineScale, getDatumLength,selectGroup, countContinuousDataset} from 'Helpers/d3Helpers'
 import ChartWrapper from 'Components/ChartWrapper'
 import image from 'GlobalTemperature/assets/desert.jpg'
 import style from 'GlobalTemperature/global-temp.scss'
@@ -12,11 +12,14 @@ const CHART_MARGIN_BOTTOM = 100
 const COLOR_SCALE = ["#a50026","#d73027","#f46d43","#fdae61","#fee090","#ffffbf","#e0f3f8","#abd9e9","#74add1","#4575b4","#313695"].reverse()
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"]
 
-// let data = fetch("https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json").then(r=>r.json())
+console.log("This is the global temperature module")
 
 export default function GlobalTemperature(props){
+  console.log("Global Temp")
+  console.log(data)
   return (
     <ChartWrapper
+      data={data}
       drawChart={drawGlobalTemp}
       img={image}
       titleTextArr={["Average Global Temperature","1753 to 2017"]}
@@ -28,9 +31,13 @@ export default function GlobalTemperature(props){
   )
 }
 
-function drawGlobalTemp(){
-  // data.then(r=> {
-    let r = JSON.parse(rawData)
+// export const data = rawData
+// const draw = drawGlobalTemp
+
+let data = Promise.resolve(JSON.parse(rawData))
+
+function drawGlobalTemp(data){
+  data.then(r=> {
     let data = r.monthlyVariance
     let height = document.getElementById("chart-svg").clientHeight
     let width = document.getElementById("chart-svg").clientWidth
@@ -132,5 +139,5 @@ function drawGlobalTemp(){
     .attr("class","tick").attr("transform",`translate(${newPathH.toFixed(1)},0)`)
     .append("text")
     .text(d=>d).attr("y",tickClone.attr("y")).attr("dy",tickClone.attr("dy"))
-  // })
+  })
 }
