@@ -6,8 +6,14 @@ var HTMLWebpackConfig = new HTMLWebpackPlugin({
   ,filename: 'index.html'
   ,inject: 'head'
 })
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
-var ExtractTextConfig = new ExtractTextPlugin('styles.css')
+// var ExtractTextPlugin = require('extract-text-webpack-plugin')
+// var ExtractTextConfig = new ExtractTextPlugin('styles.css')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const miniCssConfig = new MiniCssExtractPlugin({
+  filename: '[name].css'
+  ,chunkFilename: '[id].css'
+})
+
 var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 var OptimizeCssAssetsConfig = new OptimizeCssAssetsPlugin({
   assetNameRegExp: /.css$/
@@ -76,47 +82,37 @@ module.exports = (env, argv) => {
         //process css
         ,{ test: /\.css$/
           ,exclude: /node_modules/
-          ,use: ExtractTextPlugin.extract({fallback: 'style-loader', use:'css-loader'})
+          ,use: [MiniCssExtractPlugin.loader, 'css-loader']
+          // ,use: ExtractTextPlugin.extract({fallback: 'style-loader', use:'css-loader'})
         }
 
         //scss
         ,{ test: /\.(scss)$/
           ,exclude: /node_modules/
-          ,use: ExtractTextPlugin.extract({
-            fallback: 'style-loader' // inject CSS to page
-            ,use: [
-                    {loader: 'css-loader'} // translates CSS into CommonJS modules
-                    ,{loader: 'postcss-loader' // Run post css actions
-                      ,options: {
-                        plugins: function () { // post css plugins, can be exported to postcss.config.js
-                          return [
-                            require('precss'),
-                            require('autoprefixer')
-                          ];
-                        }
-                      }
-                    }
-                    ,{loader: 'sass-loader'} // compiles Sass to CSS
-                ]
-              })
-          }
+          ,use: [
+            MiniCssExtractPlugin.loader
+            ,'css-loader'
+            ,"postcss-loader"
+            ,'sass-loader'
+          ]
+        }
 
-          //images
-          ,{
-            test: /\.(png|jpg|gif)$/,
-            use: [
-              {
-                loader: 'file-loader',
-                options: {}
-              }
-            ]
-          }
+        //images
+        ,{
+          test: /\.(png|jpg|gif)$/,
+          use: [
+            {
+              loader: 'file-loader',
+              options: {}
+            }
+          ]
+        }
 
-          //text files
-          ,{
-            test: /\.txt$/,
-            use: 'raw-loader'
-          }
+        //text files
+        ,{
+          test: /\.txt$/,
+          use: 'raw-loader'
+        }
 
       ] // end of rules
     } //end of module
@@ -137,10 +133,13 @@ module.exports = (env, argv) => {
 
     ,plugins: [
       HTMLWebpackConfig
-      ,ExtractTextConfig
+      // ,ExtractTextConfig
       ,UglifyJSConfig
       ,new BundleAnalyzerPlugin()
       ,basename
+      ,require('precss')
+      ,require('autoprefixer')
+      ,miniCssConfig
     ]
   }
 

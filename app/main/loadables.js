@@ -43,7 +43,7 @@ export const GlobalTempLoader = Loadable({
         ,import('GlobalTemperature/drawGlobalTempChart')
         ,import('Helpers/d3Helpers')
         ,import('Helpers/d3')
-        // ,import('GlobalTemperature/global-temp.scss')
+        ,import('GlobalTemperature/global-temp.scss')
       )
 
       $export({image,rawData,draw,helpers,d3})
