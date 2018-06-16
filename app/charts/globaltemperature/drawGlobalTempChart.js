@@ -1,7 +1,8 @@
 // import style from 'GlobalTemperature/global-temp.scss'
 
 export default function drawGlobalTempChart(dataset,helpers,d3){
-  const CHART_MARGIN_X = 100
+  const CHART_MARGIN_LEFT = 100
+  const CHART_MARGIN_RIGHT = 50
   const CHART_MARGIN_TOP = 50
   const CHART_MARGIN_BOTTOM = 100
   const COLOR_SCALE = ["#a50026","#d73027","#f46d43","#fdae61","#fee090","#ffffbf","#e0f3f8","#abd9e9","#74add1","#4575b4","#313695"].reverse()
@@ -17,8 +18,8 @@ export default function drawGlobalTempChart(dataset,helpers,d3){
       ,dataset:data
       ,dataprop:"year"
       ,bufferFactor:0
-      ,rangeStart:CHART_MARGIN_X,
-      rangeEnd:width-CHART_MARGIN_X
+      ,rangeStart:CHART_MARGIN_LEFT,
+      rangeEnd:width-CHART_MARGIN_RIGHT
     })
     let scaleY = d3.scaleBand().domain([1,2,3,4,5,6,7,8,9,10,11,12])
     .range([CHART_MARGIN_TOP,height-CHART_MARGIN_BOTTOM])
@@ -64,7 +65,7 @@ export default function drawGlobalTempChart(dataset,helpers,d3){
     .tickFormat(d=>MONTHS[d-1])
     .tickSizeOuter(0)
     let y = selectGroup(svg,"y","globaltemp")
-    y.attr("transform",`translate(${CHART_MARGIN_X},0)`)
+    y.attr("transform",`translate(${CHART_MARGIN_LEFT},0)`)
     .call(axisY)
 
     //legend
