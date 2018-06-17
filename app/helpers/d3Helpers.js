@@ -21,10 +21,20 @@ export function countContinuousDataset(dataset,dataprop){
   return d3.max(dataset,d=>d[dataprop]) - d3.min(dataset,d=>d[dataprop]) + 1
 }
 
-export function selectGroup(parent,id,className=""){
-  if (d3.select("#"+id).empty()) {
-    parent.append("g").attr("id",id).attr("class",className)
-    .append("text").attr("id",`${id}-title`).attr("class",className)
+export function selectAxis(parent,id,className=null){
+  return selectElement(parent,id,className,el=>el.append("text").attr("id",`${id}-title`).attr("class",className))
+
+  // if (d3.select("#"+id).empty()) {
+  //   parent.append("g").attr("id",id).attr("class",className)
+  //   .append("text").attr("id",`${id}-title`).attr("class",className)
+  // }
+  // return d3.select("#"+id)
+}
+
+export function selectElement(parent,id,className=null,initFn=null){
+  if (d3.select("#"+id).empty()){
+    let el = parent.append("g").attr("id",id).attr("class",className)
+    if (initFn) initFn(el)
   }
   return d3.select("#"+id)
 }

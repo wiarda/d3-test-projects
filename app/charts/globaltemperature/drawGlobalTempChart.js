@@ -7,7 +7,7 @@ export default function drawGlobalTempChart(dataset,helpers,d3){
   const CHART_MARGIN_BOTTOM = 100
   const COLOR_SCALE = ["#a50026","#d73027","#f46d43","#fdae61","#fee090","#ffffbf","#e0f3f8","#abd9e9","#74add1","#4575b4","#313695"].reverse()
   const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"]
-  const {defineDomain, defineScale, getDatumLength,selectGroup, countContinuousDataset} = helpers
+  const {defineDomain, defineScale, getDatumLength,selectAxis, countContinuousDataset} = helpers
 
   dataset.then(r=> {
     let data = r.monthlyVariance
@@ -57,14 +57,14 @@ export default function drawGlobalTempChart(dataset,helpers,d3){
     .tickValues(d3.range(1760,2060,50))
     .tickFormat(d3.format(""))
     .tickSizeOuter(0)
-    let x = selectGroup(svg,"x","globaltemp")
+    let x = selectAxis(svg,"x","globaltemp")
     x.attr("transform", `translate(0,${height-CHART_MARGIN_BOTTOM})`)
     .call(axisX)
 
     let axisY = d3.axisLeft(scaleY)
     .tickFormat(d=>MONTHS[d-1])
     .tickSizeOuter(0)
-    let y = selectGroup(svg,"y","globaltemp")
+    let y = selectAxis(svg,"y","globaltemp")
     y.attr("transform",`translate(${CHART_MARGIN_LEFT},0)`)
     .call(axisY)
 
@@ -77,7 +77,7 @@ export default function drawGlobalTempChart(dataset,helpers,d3){
     })
     let scaleLegend = scaleColor.copy().range(legendRange)
 
-    let legend = selectGroup(svg,"legend").selectAll("rect").data(breakpoints)
+    let legend = selectAxis(svg,"legend").selectAll("rect").data(breakpoints)
 
     legend.enter()
     .append("rect").attr("fill",d=>scaleColor(d))
@@ -88,7 +88,7 @@ export default function drawGlobalTempChart(dataset,helpers,d3){
     let axisLegend = d3.axisBottom(scaleLegend)
     .tickValues(breakpoints)
     .tickFormat(formatLegendTicks)
-    let xLegend = selectGroup(d3.select("#legend"),"xLegend","globaltemp")
+    let xLegend = selectAxis(d3.select("#legend"),"xLegend","globaltemp")
     xLegend.attr("transform",`translate(0,${height-CHART_MARGIN_BOTTOM/2+30})`) // 30 = height of legend color scale
     .call(axisLegend)
 

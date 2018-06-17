@@ -29,6 +29,7 @@ export default class Chart extends React.Component{
                 <div id="chart-box">
                   <svg
                     id="chart-svg"
+                    className={this.props.className}
                     width="100%"
                     height={this.props.height}
                   />

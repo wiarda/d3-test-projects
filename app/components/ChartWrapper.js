@@ -14,7 +14,6 @@ export default class ChartWrapper extends React.Component{
   }
 
   componentDidMount(){
-    console.log(this.props)
     this.deriveChartHeight()
     // this.props.drawChart.bind(this)()
     window.addEventListener("throttledResize",this.deriveChartHeight)
@@ -43,7 +42,10 @@ export default class ChartWrapper extends React.Component{
       />
 
 
-      <Chart height={this.state.height}>
+      <Chart
+        height={this.state.height}
+        className={this.props.chartClassName}
+      >
         <Title
           key="title"
           titleText={this.props.titleTextArr}

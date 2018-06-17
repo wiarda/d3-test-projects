@@ -1,0 +1,17 @@
+#chart-svg *{
+  stroke: transparent;
+  stroke-width:0px;
+  fill: white;
+}
+
+#counties *{
+  fill:transparent;
+  // stroke:black;
+  // stroke-width:1px;
+}
+
+#states *{
+  stroke:blue;
+  stroke-width:1px;
+  fill:transparent;
+}
