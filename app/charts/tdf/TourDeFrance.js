@@ -13,11 +13,6 @@ const CHART_MARGIN_X = 90
 const CHART_MARGIN_Y = 50
 const CIRCLE_SIZE = 7
 
-// let data = fetch("https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/cyclist-data.json")
-// .then(r=>r.json())
-
-// console.log(data)
-
 export default function TourDeFrance(props){
 
   return(

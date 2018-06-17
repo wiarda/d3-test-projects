@@ -11,7 +11,7 @@ const defaultLoading = {
 }
 
 function Loading(props){
-  console.log(props)
+  // console.log(props)
   if (props.error) return (
        <div>Error! <button onClick={ props.retry }>Retry</button></div>
      )
@@ -26,6 +26,13 @@ function Loading(props){
      )
   else return null
 }
+
+export const EduLoader = Loadable({
+  loader(){
+    return import('Edu/UsEducation')
+  }
+  ,...defaultLoading
+})
 
 export const TDFLoader = Loadable({
   loader(){

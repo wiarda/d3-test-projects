@@ -29,6 +29,12 @@ export default function LandingPage(props){
                 </Link>
               </div>
 
+              <div className="row">
+                <Link to="/USEducation" className="chart-link">
+                  Educational Attainment Levels in the United States
+                </Link>
+              </div>
+
             </div>
 
           </div>

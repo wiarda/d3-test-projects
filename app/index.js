@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function(){
   render ((
     <Router
       basename="/"
+      // basename="/projects/d3"
     >
       <App/>
     </Router>
