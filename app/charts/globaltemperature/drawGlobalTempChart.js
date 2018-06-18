@@ -7,7 +7,7 @@ export default function drawGlobalTempChart(dataset,helpers,d3){
   const CHART_MARGIN_BOTTOM = 100
   const COLOR_SCALE = ["#a50026","#d73027","#f46d43","#fdae61","#fee090","#ffffbf","#e0f3f8","#abd9e9","#74add1","#4575b4","#313695"].reverse()
   const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"]
-  const {defineDomain, defineScale, getDatumLength,selectAxis, countContinuousDataset} = helpers
+  const {defineDomain, defineScale, getDatumLength,selectAxis, countContinuousDataset, addFinalTick} = helpers
 
   dataset.then(r=> {
     let data = r.monthlyVariance
@@ -93,23 +93,7 @@ export default function drawGlobalTempChart(dataset,helpers,d3){
     .call(axisLegend)
 
     //extend legend axis path
-    let legendPath = d3.select("#xLegend").select(".domain")
-    let re = /H([0-9.]*)/i
-    let currentPathH = legendPath.attr("d").match(re)[1]
-    let newPathH = getDatumLength(scaleLegend,breakpoints.length-1) + Number(currentPathH)
-    let newPath = legendPath.attr("d").replace(currentPathH,newPathH)
-    legendPath.attr("d",newPath)
-
-    //add final tick
-    let newBreakpoints = [...breakpoints, (breakpoints[1]-breakpoints[0]+breakpoints[breakpoints.length-1])]
-    .map(formatLegendTicks)
-    let tickClone = d3.select("#xLegend").select(".tick").select("text")
-    let legendTicks = d3.select("#xLegend").selectAll("g").data(newBreakpoints)
-
-    legendTicks.enter()
-    .append("g")
-    .attr("class","tick").attr("transform",`translate(${newPathH.toFixed(1)},0)`)
-    .append("text")
-    .text(d=>d).attr("y",tickClone.attr("y")).attr("dy",tickClone.attr("dy"))
+    addFinalTick("#xLegend",scaleLegend,breakpoints,formatLegendTicks)
+    
   })
 }
