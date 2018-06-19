@@ -1,17 +1,63 @@
-#chart-svg *{
-  stroke: transparent;
-  stroke-width:0px;
-  fill: white;
+$blue: #007bff;
+$violet: #ad4aaa;
+$maroon: #40013e;
+$pale-sky: #e4f5f6;
+
+#chart-box.edu, #sources.edu,#title-box.edu, body{
+  background-color:$pale-sky;
+}
+
+#title-box.edu h1{
+  color:$blue;
 }
 
 #counties *{
-  fill:transparent;
-  // stroke:black;
-  // stroke-width:1px;
+  stroke:#ad4aaa;
+  stroke-width:1px;
+}
+
+#counties > path:hover{
+  fill:$blue;
 }
 
 #states *{
-  stroke:blue;
+  stroke:$maroon;
   stroke-width:1px;
   fill:transparent;
+  pointer-events: none;
 }
+
+#tooltip.edu{
+  border: solid 1px $maroon;
+}
+
+#title-box.edu #subtitle{
+  color: $blue;
+  font-size:1.5rem;
+  @media only screen and (max-height:800px){
+    font-size: 1rem;
+  }
+  @media only screen and (max-width:800px){
+    font-size: 1rem;
+  }
+}
+
+#xLegend.edu{
+  color: $maroon;
+  fill: $maroon;
+  & text{
+    fill: $maroon;
+    font-size: 0.8rem;
+  }
+  & .tick line,path{
+    stroke: $maroon;
+  }
+  & .domain {
+    fill:none;
+  }
+}
+
+// #legend.edu rect{
+//   stroke: $maroon;
+//   stroke-width: 1px;
+// }

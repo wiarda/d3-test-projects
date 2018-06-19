@@ -26,7 +26,7 @@ export default class Chart extends React.Component{
               <div className="row p-1"/>
 
               <div className="row">
-                <div id="chart-box">
+                <div id="chart-box" className={this.props.className}>
                   <svg
                     id="chart-svg"
                     className={this.props.className}

@@ -45,14 +45,25 @@ export default class Title extends React.Component{
         </div>
       )
     })
+    let subTitle = this.props.subTitle ?
+      (
+        <div className="row">
+          <span id="subtitle" className="mx-auto subtitle my-0">
+            {this.props.subTitle}
+          </span>
+        </div>
+      ) :
+      null
 
     return (
       <div id="title-box"
         style={{maxWidth:this.state.width+"px"}}
+        className={this.props.className}
       >
         <div className="row py-1"/>
 
         {titles}
+        {subTitle}
 
         <div className="row py-1"/>
       </div>

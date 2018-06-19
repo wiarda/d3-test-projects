@@ -49,6 +49,7 @@ export default class ChartWrapper extends React.Component{
         <Title
           key="title"
           titleText={this.props.titleTextArr}
+          subTitle={this.props.subTitle}
           titleBoxPadding={this.titleBoxPadding}
           deriveHeight={this.deriveChartHeight}
           className={this.props.chartClassName}
