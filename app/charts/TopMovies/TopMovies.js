@@ -5,6 +5,7 @@ import img from 'Movies/assets/movie-bg2.jpg'
 import styles from './TopMovies.scss'
 import * as d3 from 'Helpers/d3'
 import {selectElement} from 'Helpers/d3Helpers'
+import * as d3plus from 'd3plus-text'
 
 const CHART_CLASS = "movies"
 const CHART_MARGIN = 10
@@ -26,8 +27,6 @@ export default function TopMovies(props){
       sourcesArray={["Wikipedia: List of Highest-Grossing Films"]}
       linksArray={["https://en.wikipedia.org/wiki/List_of_highest-grossing_films"]}
     />
-
-
   )
 }
 
@@ -87,10 +86,18 @@ function drawTreeMap(data){
     .attr("height",d=>d.y1-d.y0)
 
     //leaf titles
-    treemapEntered.append("text")
-    .attr("dx",4)
-    .attr("dy",14)
-    .text(d=>d.data.name)
-
+    d3.select("#treemap").selectAll("g")
+    .each(function(d){
+      let width = d.x1-d.x0
+      let height = d.depth < 2 ? 20 : d.y1-d.y0
+      new d3plus.TextBox()
+        .data([{text:d.data.name,height,width}])
+        .fontResize(true)
+        .fontMax(12)
+        .select(this)
+        .padding(2)
+        .render()
+    })
+    
   })
 }
