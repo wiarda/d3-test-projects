@@ -4,3 +4,4 @@ dev-webpack.config.js
 prod-webpack.config.js
 font-awesome.config.js
 ASFNR/
+*.psd

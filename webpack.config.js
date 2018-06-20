@@ -66,6 +66,7 @@ module.exports = (env, argv) => {
         ,Main: path.resolve(__dirname, 'app/main')
         ,GlobalTemperature: path.resolve(__dirname,'app/charts/globaltemperature')
         ,Edu: path.resolve(__dirname, 'app/charts/USeducation')
+        ,Movies: path.resolve(__dirname, 'app/charts/TopMovies')
       }
       // ,extensions: ['.js', '.jsx', '.png', '']
     }

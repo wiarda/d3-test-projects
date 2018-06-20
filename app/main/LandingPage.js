@@ -35,6 +35,12 @@ export default function LandingPage(props){
                 </Link>
               </div>
 
+              <div className="row">
+                <Link to="/TopMovies" className="chart-link">
+                  Top Movies by Domestic Grosses
+                </Link>
+              </div>
+
             </div>
 
           </div>

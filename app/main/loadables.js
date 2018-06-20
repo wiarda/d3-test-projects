@@ -2,7 +2,6 @@
 import Loadable from 'react-loadable'
 import imports from 'Helpers/importModules'
 import ChartWrapper from 'Components/ChartWrapper'
-// import * as d3select from 'd3-selection'
 
 const defaultLoading = {
   loading: Loading
@@ -26,6 +25,13 @@ function Loading(props){
      )
   else return null
 }
+
+export const TopMoviesLoader = Loadable({
+  loader(){
+    return import('Movies/TopMovies')
+  }
+  ,...defaultLoading
+})
 
 export const EduLoader = Loadable({
   loader(){

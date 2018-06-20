@@ -39,6 +39,7 @@ export default class ChartWrapper extends React.Component{
 
       <Background
         img={this.props.img || null}
+        className={this.props.chartClassName}
       />
 
 
