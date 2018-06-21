@@ -24,3 +24,18 @@
 #sources.movies, #chart-box.movies{
   background-color: rgba(23, 21, 21, 0.82);
 }
+
+.leaf {
+  // pointer-events: none;
+  opacity: 0;
+  // visibility: hidden;
+}
+
+.category > .d3plus-textBox text{
+  fill: pink;
+}
+
+
+.d3plus-textBox text{
+  // pointer-events:none;
+}
