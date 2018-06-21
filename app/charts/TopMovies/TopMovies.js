@@ -15,6 +15,7 @@ const COLOR_SCHEME_2 = COLOR_SCHEME.map(color=>{
 })
 const TITLE_MAX_FONT = 40
 const LEAF_MAX_FONT = 12
+const ENTRY_DURATION = 750
 
 export default function TopMovies(props){
   return (
@@ -58,7 +59,7 @@ function drawTreeMap(data){
     function drawInner(category){
       let children = r.children.filter(child=>child.name==category)
       let expandedData = {name:"Movies", children}
-      initializeTreemap(expandedData,"expanded")
+      drawTreemap(expandedData,"expanded")
       d3.selectAll(".category").each(function(){
         d3.select(this)
         .on("click",drawOuter)
@@ -66,7 +67,8 @@ function drawTreeMap(data){
     }
 
     function drawOuter(){
-      initializeTreemap(r,"leaf")
+      let root = initializeNodes(r)
+      drawTreemap(root,"leaf")
       d3.selectAll(".category").each(function(d){
         d3.select(this)
         .on("click",function(d){
@@ -75,11 +77,7 @@ function drawTreeMap(data){
       })
     }
 
-    function initializeTreemap(nodes, leafStyle){
-      let lastMap = document.getElementById("treemap")
-      if (lastMap) lastMap.remove() // clear chart DOM for rerender
-
-      //treemap setup
+    function initializeNodes(nodes){
       let root = d3.hierarchy(nodes)
       root.sum(d=>d.value)
       let treemapLayout = d3.treemap()
@@ -90,6 +88,15 @@ function drawTreeMap(data){
       .round(true)
       .tile(d3.treemapResquarify)
       treemapLayout(root)
+
+      return root
+    }
+
+
+    function drawTreemap(root, leafStyle){
+      let lastMap = document.getElementById("treemap")
+      if (lastMap) lastMap.remove() // clear chart DOM for rerender
+
 
       //root node
       let rootNode = selectElement(svg,"treemap",CHART_CLASS,el=>{
@@ -152,6 +159,10 @@ function drawTreeMap(data){
         d3.select(this).selectAll(`.${leafStyle}`).each(function(d){
           addTitle.bind(this)(d,LEAF_MAX_FONT)
         })
+
+        //fade-in
+        rootNode.transition().duration(ENTRY_DURATION)
+        .style("opacity",1)
 
       })
 
