@@ -16,6 +16,7 @@ const COLOR_SCHEME_2 = COLOR_SCHEME.map(color=>{
 const TITLE_MAX_FONT = 40
 const LEAF_MAX_FONT = 12
 const ENTRY_DURATION = 750
+const FADE_DURATION = 500
 
 export default function TopMovies(props){
   return (
@@ -41,6 +42,7 @@ function drawTreeMap(data){
     let tooltip = d3.select("#tooltip").style("opacity",0)
     let categories = r.children.map(el=>el.name)
     let isTransitioning
+    let isFadingIn, isFadingOut
 
     let color = d3.scaleOrdinal()
     .domain(categories)
@@ -95,6 +97,19 @@ function drawTreeMap(data){
 
       transition(category,treemap)
 
+      //resize titles
+      d3.select(`#${category}`)
+      .each(function(d){
+        addTitle.bind(this)(d,TITLE_MAX_FONT,false,"showDetails")
+      })
+      d3.select(`#${category}`).selectAll("g.leaf")
+      .each(function(d){
+        addTitle.bind(this)(d,TITLE_MAX_FONT)
+      })
+      .on("mouseover",function(d){
+        console.log("highlighted")
+      })
+
       //add zoom out handler
       setTimeout(function(){
         d3.select("#treemap")
@@ -130,6 +145,11 @@ function drawTreeMap(data){
       .selectAll("g.leaf").each(function(d){
         addTitle.bind(this)(d,LEAF_MAX_FONT)
       })
+      d3.select(`#${category}-value`).each(function(d){
+        addTitle.bind(this)(d,TITLE_MAX_FONT,"expandText","noDetails",formatValue(d.value))
+      })
+      .selectAll(".d3plus-textBox text")
+      .style("opacity",0)
 
       //add handlers / adjust styles once transition complete
       setTimeout(function(){
@@ -154,7 +174,6 @@ function drawTreeMap(data){
       })
     }
 
-
     function transition(category, treemap){
       let offsetX = treemap.children[0].x0
       let offsetY = treemap.children[0].y0
@@ -170,15 +189,9 @@ function drawTreeMap(data){
       branch.call(translateNode)
       branch.select("rect").call(rect)
       branch.select(".d3plus-textBox text").style("fill","black")
-      branch.each(function(d){
-        addTitle.bind(this)(d,TITLE_MAX_FONT,false)
-      })
       leaves.call(translateNode,offsetX,offsetY)
       leaves.style("opacity",1)
       leaves.select("rect").call(rect)
-      leaves.each(function(d){
-        addTitle.bind(this)(d,TITLE_MAX_FONT)
-      })
     }
 
     function rect(rect){
@@ -190,12 +203,18 @@ function drawTreeMap(data){
       node.attr("transform",d=>`translate(${d.x0-offsetX},${d.y0-offsetY})`)
     }
 
-    function addTitle(d,maxFontSize,expandText=true){
+    function addTitle(d,maxFontSize,expandText=true, showDetails=false, title=null){
       let width = d.x1-d.x0
       let height = expandText ? d.y1-d.y0 : 30 // keep node title height in visible space
       let verticalAlignment = expandText ?  "middle" : "top"
+      let text = title ||
+      ( showDetails ?
+        `${d.data.name}:
+        $${d3.format(",")(d.value)}`
+        : d.data.name
+      )
       new d3plus.TextBox()
-        .data([{text:d.data.name,height,width}])
+        .data([{text,height,width}])
         .fontResize(true)
         .fontColor("black")
         .textAnchor("middle")
@@ -220,68 +239,101 @@ function drawTreeMap(data){
       .attr("class", "treemap-root")
       rootNode.append("rect")
       .attr("fill","cornsilk")
-      .attr("width",d=>d.x1-d.x0)
-      .attr("height",d=>d.y1-d.y0)
+      .call(rect)
       rootNode.each(function(d){
-        addTitle.bind(this)(d,TITLE_MAX_FONT,false)
+        addTitle.bind(this)(d,TITLE_MAX_FONT,false,false,"Click a category for details")
       })
 
       //branches
       let branches = rootNode.selectAll("g.category").data(root.children)
       branches.enter().append("g")
-      .attr("id",d=>d.data.name)
-      .attr("transform",d=>`translate(${d.x0},${d.y0})`)
-      .attr("class",d=>`${d.data.name} category`)
-      .append("rect")
-      .attr("fill",d=>catColor(d.data.name))
-      .attr("width",d=>d.x1-d.x0)
-      .attr("height",d=>d.y1-d.y0)
+      .call(initBranch)
       d3.selectAll("g.category").each(function(d){
         addTitle.bind(this)(d,TITLE_MAX_FONT)
+
+        // currency card
+        d3.select(this).append("g")
+        .attr("id",d=>`${d.data.name}-value`)
+        .attr("class","category-back")
+        .each(function(d){
+          addTitle.bind(this)(d,TITLE_MAX_FONT,"expandText","noDetails",formatValue(d.value))
+        })
+        .selectAll(".d3plus-textBox text")
+        .style("opacity",0)
       })
 
       //leaves
       d3.selectAll(".category").each(function(d){
-        let xOffset = d.x0, yOffset = d.y0
+        let offsetX = d.x0, offsetY = d.y0
         let children = d3.select(this).selectAll("g.leaf")
         .data(d.children)
         children.enter().append("g")
         .attr("id",d=>d.data.name.split(" ").join(""))
         .attr("class",d=>`${d.data.category} leaf`)
-        .attr("transform",d=>`translate(${d.x0-xOffset},${d.y0-yOffset})`)
+        .call(translateNode,offsetX,offsetY)
         .append("rect")
         .attr("fill",d=>color(d.data.category))
-        .attr("width",d=>d.x1-d.x0)
-        .attr("height",d=>d.y1-d.y0)
-        // console.log(this,d)
+        .call(rect)
         d3.select(this).selectAll(`.leaf`).each(function(d){
           addTitle.bind(this)(d,LEAF_MAX_FONT)
         })
 
-        //fade-in
-        rootNode.transition().duration(ENTRY_DURATION)
-        .style("opacity",1)
-
       })
     } //end drawTreemap
 
+    function formatValue(value){
+      let re = /[0-9]{6}$/
+      return `$${d3.format(",")(Number(String(value).replace(re,"")))} million`
+    }
+
     function fadeIn(d){
-      d3.select(this).selectAll(".leaf")
-      .transition().duration(500)
+      d3.select(this)
+      .selectAll(".category-back > .d3plus-textBox text")
+      .transition().duration(FADE_DURATION)
       .style("opacity",1)
       d3.selectAll(`#${this.id} > .d3plus-textBox text`)
-      .transition().duration(500)
+      .transition().duration(FADE_DURATION)
       .style("fill",catColor(d.data.name))
     }
 
+    // function fadeInLeaves(d){
+    //   console.log("fade-in")
+    //   d3.select(this).selectAll(".leaf")
+    //   .transition().duration(500)
+    //   .style("opacity",1)
+    //   d3.selectAll(`#${this.id} > .d3plus-textBox text`)
+    //   .transition().duration(500)
+    //   .style("fill",catColor(d.data.name))
+    // }
+
     function fadeOut(d){
-      d3.select(this).selectAll(".leaf")
-      .transition().duration(500)
+      d3.select(this).selectAll(".category-back > .d3plus-textBox text")
+      .transition().duration(FADE_DURATION)
       .style("opacity",0)
       d3.select(`#${this.id} > .d3plus-textBox text`)
-      .transition().duration(500)
+      .transition().duration(FADE_DURATION)
       .style("fill","black")
     }
+
+    // function fadeOutLeaves(d){
+    //   console.log("fade-out")
+    //   d3.select(this).selectAll(".leaf")
+    //   .transition().duration(500)
+    //   .style("opacity",0)
+    //   d3.select(`#${this.id} > .d3plus-textBox text`)
+    //   .transition().duration(500)
+    //   .style("fill","black")
+    // }
+
+    function initBranch(branch,id,className){
+      branch.attr("id",d=>id?id:d.data.name)
+      .call(translateNode)
+      .attr("class",d=>className ? className : `${d.data.name} category`)
+      .append("rect")
+      .attr("fill",d=>catColor(d.data.name))
+      .call(rect)
+    }
+
 
     function clearEventListeners(){
       d3.selectAll(".category")
@@ -290,6 +342,9 @@ function drawTreeMap(data){
       .on("click",null)
       d3.select("#treemap")
       .on("click",null)
+      d3.selectAll("g.leaf")
+      .on("mouseover",null)
+      .on("mouseout",null)
     }
 
   })

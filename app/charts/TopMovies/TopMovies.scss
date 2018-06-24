@@ -26,16 +26,13 @@
 }
 
 .leaf {
-  // pointer-events: none;
+  // pointer-events: visiblePainted;
+  pointer-events: none;
   opacity: 0;
   // visibility: hidden;
 }
 
-.category > .d3plus-textBox text{
-  fill: pink;
-}
 
-
-.d3plus-textBox text{
-  // pointer-events:none;
+.d3plus-textBox *{
+  pointer-events:none;
 }
