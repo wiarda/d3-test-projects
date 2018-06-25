@@ -33,6 +33,10 @@
 }
 
 
-.d3plus-textBox *{
+.d3plus-textBox, d3d3plus-textBox *, text, .leaf, .leaf rect{
   pointer-events:none;
+}
+
+.selectable{
+  pointer-events: auto !important;
 }

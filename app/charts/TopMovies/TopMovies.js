@@ -86,8 +86,13 @@ function drawTreeMap(data){
         return el.id != category
       })
       fadeoutNodes.forEach(function(el){
-        d3.select(el).transition().duration(ENTRY_DURATION)
+        d3.select(el)
+        // .classed("selectable",false)
+        .style("pointer-events","none")
+        .transition().duration(ENTRY_DURATION)
         .style("opacity",0)
+        .select("rect")
+        .style("pointer-events","none")
       })
 
       //recalculate tree size
@@ -103,12 +108,29 @@ function drawTreeMap(data){
         addTitle.bind(this)(d,TITLE_MAX_FONT,false,"showDetails")
       })
       d3.select(`#${category}`).selectAll("g.leaf")
+      .classed("selectable",true)
       .each(function(d){
         addTitle.bind(this)(d,TITLE_MAX_FONT)
       })
-      .on("mouseover",function(d){
-        console.log("highlighted")
+      //add leaf mouseover events
+      .on("mouseover",function(){
+        d3.select(this).each(function(d){
+          addTitle.bind(this)(d,TITLE_MAX_FONT,"expandText","noDetails",formatValue(d.value))
+        })
+        d3.select(this).select("rect")
+        .attr("stroke","white")
+        .attr("stroke-width",5)
       })
+      .on("mouseout",function(){
+        d3.select(this).each(function(d){
+          addTitle.bind(this)(d,TITLE_MAX_FONT)
+        })
+        d3.select(this).select("rect")
+        .attr("stroke","none")
+      })
+      .select("rect")
+      .classed("selectable",true)
+
 
       //add zoom out handler
       setTimeout(function(){
@@ -128,7 +150,9 @@ function drawTreeMap(data){
       clearEventListeners()
 
       // fadein hidden categories
-      d3.selectAll(".category").transition().duration(ENTRY_DURATION)
+      d3.selectAll(".category")
+      .style("pointer-events","auto")
+      .transition().duration(ENTRY_DURATION)
       .style("opacity",1)
 
       // calculate tree size
