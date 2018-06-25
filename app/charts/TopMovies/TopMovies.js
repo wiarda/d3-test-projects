@@ -169,6 +169,9 @@ function drawTreeMap(data){
       .selectAll("g.leaf").each(function(d){
         addTitle.bind(this)(d,LEAF_MAX_FONT)
       })
+      .classed("selectable",false)
+      .select("rect")
+      .classed("selectable",false)
       d3.select(`#${category}-value`).each(function(d){
         addTitle.bind(this)(d,TITLE_MAX_FONT,"expandText","noDetails",formatValue(d.value))
       })
