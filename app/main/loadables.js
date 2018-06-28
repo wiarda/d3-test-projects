@@ -2,6 +2,7 @@
 import Loadable from 'react-loadable'
 import imports from 'Helpers/importModules'
 import ChartWrapper from 'Components/ChartWrapper'
+import LoadingScreen from 'Components/LoadingScreen'
 
 const defaultLoading = {
   loading: Loading
@@ -21,7 +22,7 @@ function Loading(props){
        </div>
      )
   else if (props.pastDelay) return (
-       <div>Loading...</div>
+       <LoadingScreen/>
      )
   else return null
 }

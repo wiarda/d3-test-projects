@@ -13,6 +13,7 @@ const COLOR_SCHEME = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c
 const COLOR_SCHEME_2 = COLOR_SCHEME.map(color=>{
   return d3.interpolate(color,"white")(0.25)
 })
+const TREE_COLOR = "rgba(0,0,0,.3)"
 const TITLE_MAX_FONT = 40
 const LEAF_MAX_FONT = 12
 const ENTRY_DURATION = 750
@@ -24,7 +25,7 @@ export default function TopMovies(props){
       data={Promise.resolve(movieData)}
       drawChart={drawTreeMap}
       img={img}
-      titleTextArr={["Top grossing movies","by category"]}
+      titleTextArr={["Top Grossing Movies"]}
       subTitle={null}
       chartFooterMargin={50}
       chartClassName={CHART_CLASS}
@@ -61,7 +62,7 @@ function drawTreeMap(data){
       let treemapLayout = d3.treemap()
       .size([width-2*CHART_MARGIN,height-2*CHART_MARGIN])
       .paddingOuter(5)
-      .paddingTop(25)
+      .paddingTop(30)
       .paddingInner(2)
       .round(true)
       .tile(d3.treemapResquarify)
@@ -107,6 +108,8 @@ function drawTreeMap(data){
       .each(function(d){
         addTitle.bind(this)(d,TITLE_MAX_FONT,false,"showDetails")
       })
+      .selectAll("rect")
+      .attr("stroke","none")
       d3.select(`#${category}`).selectAll("g.leaf")
       .classed("selectable",true)
       .each(function(d){
@@ -120,6 +123,7 @@ function drawTreeMap(data){
         d3.select(this).select("rect")
         .attr("stroke","white")
         .attr("stroke-width",5)
+        .attr("fill",d=>catColor(d.data.category))
       })
       .on("mouseout",function(){
         d3.select(this).each(function(d){
@@ -127,6 +131,7 @@ function drawTreeMap(data){
         })
         d3.select(this).select("rect")
         .attr("stroke","none")
+        .attr("fill",d=>color(d.data.category))
       })
       .select("rect")
       .classed("selectable",true)
@@ -172,6 +177,8 @@ function drawTreeMap(data){
       .classed("selectable",false)
       .select("rect")
       .classed("selectable",false)
+      .attr("fill",d=>color(d.data.category))
+      .attr("stroke","none")
       d3.select(`#${category}-value`).each(function(d){
         addTitle.bind(this)(d,TITLE_MAX_FONT,"expandText","noDetails",formatValue(d.value))
       })
@@ -265,7 +272,7 @@ function drawTreeMap(data){
       .datum(root)
       .attr("class", "treemap-root")
       rootNode.append("rect")
-      .attr("fill","cornsilk")
+      .attr("fill",TREE_COLOR)
       .call(rect)
       rootNode.each(function(d){
         addTitle.bind(this)(d,TITLE_MAX_FONT,false,false,"Click a category for details")
@@ -321,6 +328,9 @@ function drawTreeMap(data){
       d3.selectAll(`#${this.id} > .d3plus-textBox text`)
       .transition().duration(FADE_DURATION)
       .style("fill",catColor(d.data.name))
+      d3.select(this).select("rect")
+      .attr("stroke","white")
+      .attr("stroke-width",5)
     }
 
     // function fadeInLeaves(d){
@@ -340,6 +350,8 @@ function drawTreeMap(data){
       d3.select(`#${this.id} > .d3plus-textBox text`)
       .transition().duration(FADE_DURATION)
       .style("fill","black")
+      d3.select(this).select("rect")
+      .attr("stroke","none")
     }
 
     // function fadeOutLeaves(d){

@@ -67,6 +67,7 @@ module.exports = (env, argv) => {
         ,GlobalTemperature: path.resolve(__dirname,'app/charts/globaltemperature')
         ,Edu: path.resolve(__dirname, 'app/charts/USeducation')
         ,Movies: path.resolve(__dirname, 'app/charts/TopMovies')
+        ,Styles: path.resolve(__dirname, 'app/stylesheets')
       }
       // ,extensions: ['.js', '.jsx', '.png', '']
     }
@@ -125,7 +126,7 @@ module.exports = (env, argv) => {
       filename: 'index.js'
       ,path: __dirname + '/build'
       // publicPath for dev server
-      ,publicPath: '/'
+      // ,publicPath: '/'
       ,chunkFilename: '[name].bundle.js'
     }
 

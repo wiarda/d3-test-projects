@@ -1,7 +1,10 @@
 $bg-shade: rgba(0,0,0,.3);
+$pale-sky: #e4f5f6;
+$blue: #007bff;
 
 body{
   min-width: 500px;
+  background-color: $pale-sky;
 }
 
 .background{

@@ -10,8 +10,8 @@ document.addEventListener("DOMContentLoaded", function(){
   throttleResize(200)
   render ((
     <Router
-      basename="/"
-      // basename="/projects/d3"
+      // basename="/"
+      basename="/projects/d3"
     >
       <App/>
     </Router>

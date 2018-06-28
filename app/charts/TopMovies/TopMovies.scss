@@ -21,6 +21,10 @@
   fill:black;
 }
 
+#chart-svg.movies #treemap > .d3plus-textBox > text{
+  fill:cornsilk;
+}
+
 #sources.movies, #chart-box.movies{
   background-color: rgba(23, 21, 21, 0.82);
 }
